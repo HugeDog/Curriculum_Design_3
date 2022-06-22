@@ -26,7 +26,8 @@ if [ -e $build_dir ]
 then 
     green "Directory Exists! \nBuilding..."
 else
-    red "Directory NOT Exists! \nMake Dir... \nBuilding..."
+    red "Directory NOT Exists!"
+    yellow "Make Dir... \nBuilding..."
     mkdir $build_dir
 fi
 yellow "================= BUILDING... ==================="
