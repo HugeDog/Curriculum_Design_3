@@ -115,6 +115,7 @@ int main(int argc, char **argv) {
     // 接受了服务器的种子
     a = echo_rcv(socketfd);
     serverseed = strtoull(rcvss, NULL, 0);
+    
     // 生成密钥
     test2(serverseed,seds.a, keycli);// 密钥
 

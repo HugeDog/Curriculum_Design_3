@@ -7,7 +7,7 @@ char rcvss[MAX_LEN2];
 char senss[MAX_LEN1];
 
 void changes(unsigned char* chars, int num){
-    if (num == 0) return;
+    if (!num) return;
     num --;
     chars[num] = '\0';
     return;

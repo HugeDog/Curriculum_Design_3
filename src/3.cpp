@@ -189,6 +189,7 @@ int main(int argc, char** args) {
         echo_senl(socketfdl,senssl);
         memset(rcvssl,0,sizeof(rcvssl));
 
+
         // 模拟客户机给服务器发送种子
         seds2 = test1();
         // printf("%llu////\n",seds2.b);
@@ -206,20 +207,20 @@ int main(int argc, char** args) {
         // 生成密钥
         test2(serverseedr, seds2.a, key222);// 密钥
         // printf("---------%s-----------",key111);
-        printf("MY_TO_CLI-SECR:%llu\n",seds1.a);
-        printf("MY_TO_CLI-SEED:%llu\n",seds1.b);
-        printf("CL-SEED:%llu\n",clientseedl);
+        printf("MY_TO_CLI-SECR:%llu\n", seds1.a);
+        printf("MY_TO_CLI-SEED:%llu\n", seds1.b);
+        printf("CL-SEED:%llu\n", clientseedl);
         printf("==================================================\n");
-        printf("MY_TO_SER-SECR:%llu\n",seds2.a);
-        printf("MY_TO_SER-SEED:%llu\n",seds2.b);
-        printf("SER-SEED:%llu\n",serverseedr);
+        printf("MY_TO_SER-SECR:%llu\n", seds2.a);
+        printf("MY_TO_SER-SEED:%llu\n", seds2.b);
+        printf("SER-SEED:%llu\n", serverseedr);
         printf("==================================================\n");
-        printf("KEY-C>>>%s\n",key111);
-        printf("KEY-S>>>%s\n",key222);
+        printf("KEY-C>>>%s\n", key111);
+        printf("KEY-S>>>%s\n", key222);
         printf("==================================================\n");
 
         al = echo_rcvl(socketfdl); // 接收密文
-        ctou(rcvssl,ciphertextl); // 接收的字符串转换成无符号数字
+        ctou(rcvssl, ciphertextl); // 接收的字符串转换成无符号数字
 
         al = echo_rcvl(socketfdl); // 密文大小接收
         // flagcl = rcvssl[0]; 
