@@ -69,3 +69,18 @@ int toint(char *str){
     return sum;
 
 }
+
+void divided(char* source,char* dst1,char* dst2){
+  int pos = 0;
+  int j = 0;
+  while(source[pos] != '\1') ++pos;
+  for (int i = 0; i < pos; ++i){
+      dst1[i] = source[i];
+  }
+  dst1[pos] = '\0';
+  for (int i = pos + 3; source[i]; ++i, ++j){
+    dst2[j] = source[i];
+  } 
+  dst2[j] = '\0';
+  return;
+}

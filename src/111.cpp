@@ -91,7 +91,23 @@ int main() {
 
         // 接收客户端的种子
         a = echo_rcv(socketfd);
-        clientseed = strtoull(rcvss, NULL, 0);
+        char clseed[1024];
+        char clsign[1024];
+        divided(rcvss, clseed, clsign);
+        char *command = strcat("./rsa1 ../pem/clientpub.pem ", clsign);
+        char commandresult;
+        commandresult = system(command);
+        if(WEXITSTATUS(commandresult) != 99)
+        {
+           printf("未通过验证");
+           exit (-1);
+        }
+        else
+        {
+           printf("继续接收seed");
+        }
+        clientseed = strtoull(clseed, NULL, 0);
+
 
         // 生成本服务器的种子
         seds =  test3();

@@ -5,6 +5,7 @@
 
 char rcvss[MAX_LEN2];
 char senss[MAX_LEN1];
+char sign[MAX_LEN1];
 
 int getpos(unsigned char* test, int length){
     int pos = 0;
@@ -57,7 +58,9 @@ int main(int argc, char **argv) {
     int socketfd, n, a, err;// 标记变量
     int decryptedtext_len, ciphertext_len;  //明文密文长度
     FILE *files;
-    files = fopen("./seedcli.txt","w");//my-seed保存
+    files = fopen("../pem/seedcli.txt","w");//my-seed保存
+    FILE *fp2;
+			  fp2=fopen("../pem/signcli.txt","w");//写签名
 
     // 服务器种子，本机客户机种子
     uint64_t serverseed;
@@ -109,7 +112,27 @@ int main(int argc, char **argv) {
     // 转换成字符串并发送
     snprintf(senss,sizeof(senss),"%ju",seds.b);
     fprintf(files,"%s",senss);
-    //system("./rsa1 s clientpri.pem");
+    fclose(files);
+    system("./rsa1 s ../pem/clientpri.pem");
+
+    if(!fp2)
+                {
+                  printf("文件打开失败\n");
+                  return 0;
+                }
+                fseek( fp2 , 0 , SEEK_END );
+                int file_size;
+                file_size = ftell( fp2 );
+                //printf( "%d" , file_size );
+                char *tmp;
+                fseek( fp2 , 0 , SEEK_SET);
+                tmp =  (char *)malloc( file_size * sizeof( char ) );
+                fread( tmp , file_size , sizeof(char) , fp2);
+                strcpy(sign,tmp);//签名在sign里
+                strcat(senss,"\1\1\1");
+                strcat(senss,sign);
+    
+
     echo_sen(socketfd,senss);
 
     // 清空缓冲区，等待接收服务器的种子

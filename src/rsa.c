@@ -61,11 +61,11 @@ int my_verify(const char *input, int input_len,  unsigned char *signret, unsigne
     printf("verify is ok!\n");
     RSA_free(p_rsa);
     BN_free(signnum);
-    return 0;
+    exit (99);//验证成功
 }
 
 //私钥签名
-int my_sign(const char *input, int input_len, BIGNUM *signret, const char *pri_key_fn)//,unsigned char *datax
+int my_sign(const char *input, int input_len, BIGNUM *signret, const char *pri_key_fn, char *datax)//,unsigned char *datax
 {
     RSA  *p_rsa = NULL;
     FILE *file = NULL;
@@ -118,8 +118,8 @@ int my_sign(const char *input, int input_len, BIGNUM *signret, const char *pri_k
 
     data[1][2*i] = 0x00;
 
-    //strcpy(datax,data[1]);
-    printf("%s\n", data[1]);
+    strcpy(datax,data[1]);
+    //printf("%s\n", data[1]);
     BN_hex2bn(&signret, data[1]);
 
     return 0;
@@ -130,11 +130,14 @@ int main(int argc, char**argv)
         BIGNUM *dst = BN_new();
         char src[2048+1];
         char dst_str[512+1];
+        char datax[2048+1];
         int src_len;
         int ret;
         FILE *f;
         FILE *fp;
-			  fp=fopen("./seedcli.txt","r");//读取
+			  fp=fopen("../pem/seedcli.txt","r");//读取
+        FILE *fp2;
+			  fp2=fopen("../pem/signcli.txt","w");//写签名
 
         memset(src, 0x00, sizeof(src));
         memset(dst, 0x00, sizeof(dst));
@@ -159,12 +162,13 @@ int main(int argc, char**argv)
                 //strcpy(src, "aedewderdfercfrtvgfrtfgrtgfrtgvtrgtrvgtyebtybytbnybyuyubndrybrfgswdhyewhde");
                 src_len = strlen(src);
 
-                ret = my_sign(src, src_len, dst, argv[2]);
+                ret = my_sign(src, src_len, dst, argv[2], datax);
+                fprintf(fp2,"%s",datax);
                 //assert(ret == NULL);
                 if(ret)
                 {
                         fprintf(stderr, "%d\n",ret);
-                        fprintf(stderr, "Error12222\n");
+                        fprintf(stderr, "Error1\n");
                 }
         }
         else
@@ -181,6 +185,7 @@ int main(int argc, char**argv)
         }
 
         BN_free(dst);
-
+        fclose(fp);
+        fclose(fp2);
         return ret;
 }
