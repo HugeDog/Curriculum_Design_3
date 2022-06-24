@@ -84,3 +84,26 @@ void divided(char* source,char* dst1,char* dst2){
   dst2[j] = '\0';
   return;
 }
+
+
+void my_system(const char *cmd, char *result)
+{
+	  char buf[1024];
+    int flag = 0;
+    memset( buf, '\0', sizeof(buf) );
+    FILE *fp = NULL;
+
+    if( (fp = popen(cmd, "r")) == NULL ) {
+        printf("popen error!\n");
+        return;
+    }
+    memset( buf, '\0', sizeof(buf) );
+    while (fgets(buf, sizeof(buf), fp)) {
+        flag++;
+        if(flag >= 1)
+        strcat(result, buf);
+    }
+    
+    pclose(fp);
+
+}

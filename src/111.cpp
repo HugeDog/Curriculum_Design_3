@@ -5,6 +5,7 @@
 
 char rcvss[MAX_LEN2];
 char senss[MAX_LEN1];
+char sign[MAX_LEN1];
 
 void changes(unsigned char* chars, int num){
     if (!num) return;
@@ -71,7 +72,7 @@ int main() {
         unsigned char decryptedtext[2048]; //明文
         unsigned char keyser[129]; //密钥
         FILE *files;
-        files = fopen("./seedser.txt","w");//my-seed保存
+        files = fopen("../pem/seedser.txt","w");//my-seed保存
 
         char flagc; //密文大小标记位
 
@@ -88,37 +89,71 @@ int main() {
 
         socketfd = accept(listen_socketfd, NULL, NULL);
         memset(rcvss,0,sizeof(rcvss));
+        printf("%s\n", rcvss);
 
         // 接收客户端的种子
         a = echo_rcv(socketfd);
         char clseed[1024];
         char clsign[1024];
+        char tmp00[1024];
+        char result00[1024] = {0};
         divided(rcvss, clseed, clsign);
-        char *command = strcat("./rsa1 ../pem/clientpub.pem ", clsign);
-        char commandresult;
-        commandresult = system(command);
-        if(WEXITSTATUS(commandresult) != 99)
-        {
-           printf("未通过验证");
-           exit (-1);
-        }
-        else
-        {
-           printf("继续接收seed");
-        }
+        strcpy(tmp00, "./rsa1 ../pem/clientpub.pem ");
+        strcat(tmp00, clsign);
+        strcat(tmp00, " ");
+        strcat(tmp00, clseed);
+        char command[1024]; 
+        strcpy(command, tmp00);
+        //printf("%s\n", command);
+        //char *commandresult;
+        my_system(command, result00);
+        printf("ok%sok\n", result00);//"result: 
+        // system(command);
+        // if(result00 != "RSA签名验证成功!\n")
+        // {
+        //    //printf("未通过验证%s",WEXITSTATUS(commandresult));
+        //    exit (-1);
+        // }
+        // else
+        // {
+        //    printf("继续接收seed");
+        // }
+
+
         clientseed = strtoull(clseed, NULL, 0);
-
-
         // 生成本服务器的种子
         seds =  test3();
         // printf("%llu\n\n\n",self1);
         snprintf(senss,sizeof(senss),"%ju",seds.b);
-        fprintf(files,"%s",senss);
+        fprintf(files,"%s",senss);//写入服务器seed
+        fclose(files);
+        system("./rsa1 n ../pem/serverpri.pem");
 
         // 计算密钥
         test4(clientseed, seds.a, keyser);
         // 消停一会
         sleep(1);
+        
+        FILE *fp3;
+        fp3=fopen("../pem/signser.txt","r");//写签名
+        if(!fp3)
+        {
+          printf("文件打开失败\n");
+          return 0;
+        }
+        fseek( fp3 , 0 , SEEK_END );
+        int file_size;
+        file_size = ftell( fp3 );
+        //printf( "%d" , file_size );
+        char *tmp;
+        fseek( fp3 , 0 , SEEK_SET);
+        tmp =  (char *)malloc( file_size * sizeof( char ) );
+        fread( tmp , file_size , sizeof(char) , fp3);
+        strcpy(sign,tmp);//签名在sign里
+        strcat(senss,"\1\1\1");
+        strcat(senss,sign);
+        fclose(fp3);
+        
 
         // 种子发送给客户机
         echo_sen(socketfd,senss);

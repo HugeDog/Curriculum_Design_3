@@ -59,8 +59,7 @@ int main(int argc, char **argv) {
     int decryptedtext_len, ciphertext_len;  //明文密文长度
     FILE *files;
     files = fopen("../pem/seedcli.txt","w");//my-seed保存
-    FILE *fp2;
-			  fp2=fopen("../pem/signcli.txt","w");//写签名
+    
 
     // 服务器种子，本机客户机种子
     uint64_t serverseed;
@@ -114,23 +113,27 @@ int main(int argc, char **argv) {
     fprintf(files,"%s",senss);
     fclose(files);
     system("./rsa1 s ../pem/clientpri.pem");
-
+    
+   
+    FILE *fp2;
+		fp2=fopen("../pem/signcli.txt","r");//写签名
     if(!fp2)
-                {
-                  printf("文件打开失败\n");
-                  return 0;
-                }
-                fseek( fp2 , 0 , SEEK_END );
-                int file_size;
-                file_size = ftell( fp2 );
-                //printf( "%d" , file_size );
-                char *tmp;
-                fseek( fp2 , 0 , SEEK_SET);
-                tmp =  (char *)malloc( file_size * sizeof( char ) );
-                fread( tmp , file_size , sizeof(char) , fp2);
-                strcpy(sign,tmp);//签名在sign里
-                strcat(senss,"\1\1\1");
-                strcat(senss,sign);
+    {
+      printf("文件打开失败\n");
+      return 0;
+    }
+    fseek( fp2 , 0 , SEEK_END );
+    int file_size;
+    file_size = ftell( fp2 );
+    //printf( "%d" , file_size );
+    char *tmp;
+    fseek( fp2 , 0 , SEEK_SET);
+    tmp =  (char *)malloc( file_size * sizeof( char ) );
+    fread( tmp , file_size , sizeof(char) , fp2);
+    strcpy(sign,tmp);//签名在sign里
+    strcat(senss,"\1\1\1");
+    strcat(senss,sign);
+    fclose(fp2);
     
 
     echo_sen(socketfd,senss);
@@ -141,7 +144,23 @@ int main(int argc, char **argv) {
 
     // 接受了服务器的种子
     a = echo_rcv(socketfd);
-    serverseed = strtoull(rcvss, NULL, 0);
+
+    char serseed[1024];
+    char sersign[1024];
+    char tmp00[1024];
+    char result00[1024] = {0};
+    divided(rcvss, serseed, sersign);
+    strcpy(tmp00, "./rsa1 ../pem/serverpub.pem ");
+    strcat(tmp00, sersign);
+    strcat(tmp00, " ");
+    strcat(tmp00, serseed);
+    char command[1024]; 
+    strcpy(command, tmp00);
+    //printf("%s\n", command);
+    //char *commandresult;
+    my_system(command, result00);
+    printf("%s\n", result00);//"result: 
+    serverseed = strtoull(serseed, NULL, 0);
     
     // 生成密钥
     test2(serverseed,seds.a, keycli);// 密钥
