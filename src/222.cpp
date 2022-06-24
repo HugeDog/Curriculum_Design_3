@@ -144,11 +144,12 @@ int main(int argc, char **argv) {
 
     // 接受了服务器的种子
     a = echo_rcv(socketfd);
-
+    printf("接收到服务器seed\n");
     char serseed[1024];
     char sersign[1024];
     char tmp00[1024];
     char result00[1024] = {0};
+    char result000[1024] = {0};
     divided(rcvss, serseed, sersign);
     strcpy(tmp00, "./rsa1 ../pem/serverpub.pem ");
     strcat(tmp00, sersign);
@@ -159,7 +160,21 @@ int main(int argc, char **argv) {
     //printf("%s\n", command);
     //char *commandresult;
     my_system(command, result00);
-    printf("%s\n", result00);//"result: 
+    strncpy(result000,result00,21);
+    printf("%s", result00);//"result: 
+    if(strcmp(result000, "RSA签名验证成功"))
+    {
+        printf("未通过验证");
+        exit (-1);
+    }
+    else
+    {
+        printf("继续接收seed\n");
+    }
+
+
+
+
     serverseed = strtoull(serseed, NULL, 0);
     
     // 生成密钥

@@ -93,11 +93,13 @@ int main() {
 
         // 接收客户端的种子
         a = echo_rcv(socketfd);
+        printf("接收到客户端seed\n");
         char clseed[1024];
         char clsign[1024];
         char tmp00[1024];
         char result00[1024] = {0};
-        divided(rcvss, clseed, clsign);
+        char result000[1024] = {0};
+        divided(rcvss, clseed, clsign);//切分seed和签名
         strcpy(tmp00, "./rsa1 ../pem/clientpub.pem ");
         strcat(tmp00, clsign);
         strcat(tmp00, " ");
@@ -106,18 +108,19 @@ int main() {
         strcpy(command, tmp00);
         //printf("%s\n", command);
         //char *commandresult;
-        my_system(command, result00);
-        printf("ok%sok\n", result00);//"result: 
-        // system(command);
-        // if(result00 != "RSA签名验证成功!\n")
-        // {
-        //    //printf("未通过验证%s",WEXITSTATUS(commandresult));
-        //    exit (-1);
-        // }
-        // else
-        // {
-        //    printf("继续接收seed");
-        // }
+        my_system(command, result00);//执行rsa1验证签名
+        printf("%s",result00);
+        strncpy(result000,result00,21);
+        //strcat(result000,"\0\0\0\0");
+        if(strcmp(result000, "RSA签名验证成功"))
+        {
+           printf("未通过验证");
+           exit (-1);
+        }
+        else
+        {
+           printf("继续接收seed\n");
+        }
 
 
         clientseed = strtoull(clseed, NULL, 0);
