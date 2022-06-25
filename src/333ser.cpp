@@ -72,7 +72,7 @@ int main() {
         unsigned char decryptedtext[2048]; //明文
         unsigned char keyser[129]; //密钥
         FILE *files;
-        files = fopen("../pem/seedser.txt","w");//my-seed保存
+        files = fopen("../pem/seedmiddle.txt","w");//my-seed保存
 
         char flagc; //密文大小标记位
 
@@ -115,7 +115,7 @@ int main() {
         //strcat(result000,"\0\0\0\0");
         if(strcmp(result000, "RSA签名验证成功"))
         {
-           printf("未通过验证，中断连接\n");
+           printf("未通过验证");
            exit (-1);
         }
         else
@@ -131,7 +131,7 @@ int main() {
         snprintf(senss,sizeof(senss),"%ju",seds.b);
         fprintf(files,"%s",senss);//写入服务器seed
         fclose(files);
-        system("./rsa1 n ../pem/serverpri.pem");
+        system("./rsa1 g ../pem/middlepri.pem");
 
         // 计算密钥
         test4(clientseed, seds.a, keyser);
@@ -139,7 +139,7 @@ int main() {
         sleep(1);
         
         FILE *fp3;
-        fp3=fopen("../pem/signser.txt","r");//写签名
+        fp3=fopen("../pem/signmiddle.txt","r");//写签名
         if(!fp3)
         {
           printf("文件打开失败\n");

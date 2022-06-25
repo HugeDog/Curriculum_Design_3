@@ -18,7 +18,7 @@
 #ifndef _ENDE_H  
 #define _ENDE_H  
 
-void handleErrors(void)  
+inline void handleErrors(void)  
 {  
   ERR_print_errors_fp(stderr);  
   abort();  

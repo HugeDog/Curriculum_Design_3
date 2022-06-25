@@ -1,7 +1,7 @@
-#include "../include/network.h"
-#include "./diff1.cpp"
-#include"../include/en.h"
-#include"../include/de.h"
+#include "network.h"
+#include "diff1.cpp"
+#include "en.h"
+#include "de.h"
 
 char rcvss[MAX_LEN2];
 char senss[MAX_LEN1];
