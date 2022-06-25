@@ -1,32 +1,52 @@
 #!/bin/bash
 # 我先顽皮一哈子
 
-echo -e "Jinqi Li and Chenchu Zhang Build Shell"
-
-options="-lcrypto -lssl"
 build_dir="./build"
+
+#########################################
+red(){
+    echo -e "\033[31m\033[01m$1\033[0m"
+}
+green(){
+    echo -e "\033[32m\033[01m$1\033[0m"
+}
+yellow(){
+    echo -e "\033[33m\033[01m$1\033[0m"
+}
+blue(){
+    echo -e "\033[34m\033[01m$1\033[0m"
+}
+bold(){
+    echo -e "\033[1m\033[01m$1\033[0m"
+}
+##########################################
+
+blue "-----Jinqi Li and Chenchu Zhang Build Shell-----"
 
 if [ -e $build_dir ]
 then 
-    echo -e "Directory Exists! \nBuilding..."
+    green "Directory Exists!"
+    blue "Deleting..."
+    rm -rf $build_dir
 else
-    echo -e "Directory NOT Exists! \nMake Dir... \nBuilding..."
-    mkdir $build_dir
+    red "Directory NOT Exists!"
 fi
-echo -e "================= BUILDING... ==================="
-g++ ./src/1.cpp -o ./build/1-server $options
-g++ ./src/2.cpp -o ./build/1-client $options
-g++ ./src/222.cpp -o ./build/3-client $options
-g++ ./src/111.cpp -o ./build/3-server $options
-g++ ./src/333ser.cpp -o ./build/3-middleserver $options
-g++ ./src/333cli.cpp -o ./build/3-middleclient $options
-gcc ./src/rsa.c -o ./build/rsa1 $options
 
-g++ ./src/3.cpp -o ./build/2-thief $options
-g++ ./src/11.cpp -o ./build/2-server $options
-g++ ./src/22.cpp -o ./build/2-client $options
-# 2-server   2-thief   2-client
+blue "Make Dir..."
+mkdir $build_dir
+green "Make Dir Successfully !!"
 
-chmod 777 ./build/*
+blue "================= BUILDING... ==================="
+blue "Enter Directory..."
 
-echo -e "Done, But U Need To Check If There Has No ERROR!"
+cd $build_dir
+
+blue "============= CMAKE ==============="
+cmake ..
+
+blue "============= MAKE ==============="
+make
+
+green "Leave Directory..."
+green "==================== ENDS! ======================"
+green "Done!"

@@ -1,8 +1,8 @@
-#include "../include/network.h"
-#include "./diff1.cpp"
+#include "network.h"
+#include "diff1.cpp"
 #include <exception>
-#include"../include/en.h"
-#include"../include/de.h"
+#include "en.h"
+#include "de.h"
 
 char rcvss[MAX_LEN2 + 1];
 char senss[MAX_LEN1 + 1];
