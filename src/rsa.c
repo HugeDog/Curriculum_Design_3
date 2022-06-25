@@ -209,6 +209,42 @@ int main(int argc, char**argv)
                 }
                 fclose(fp);
         }
+        else if (argv[1][0] == 'g')
+        {
+                FILE *f;
+                FILE *fp;
+                fp=fopen("../pem/seedmiddle.txt","r");//读取
+                FILE *fp2;
+                fp2=fopen("../pem/signmiddle.txt","w");//写签名
+                if(!fp)
+                {
+                  printf("文件打开失败\n");
+                  return 0;
+                }
+                fseek( fp , 0 , SEEK_END );
+                int file_size;
+                file_size = ftell( fp );
+                //printf( "%d" , file_size );
+                char *tmp;
+                fseek( fp , 0 , SEEK_SET);
+                tmp =  (char *)malloc( file_size * sizeof( char ) );
+                fread( tmp , file_size , sizeof(char) , fp);
+                strcpy(src,tmp);
+                //printf("%ssrcname\n",src);
+                //strcpy(src, "aedewderdfercfrtvgfrtfgrtgfrtgvtrgtrvgtyebtybytbnybyuyubndrybrfgswdhyewhde");
+                src_len = strlen(src);
+
+                ret = my_sign(src, src_len, dst, argv[2], datax);
+                fprintf(fp2,"%s",datax);
+                fclose(fp2);
+                //assert(ret == NULL);
+                if(ret)
+                {
+                        fprintf(stderr, "%d\n",ret);
+                        fprintf(stderr, "Error1\n");
+                }
+                fclose(fp);
+        }
         else
         {
                 //printf()

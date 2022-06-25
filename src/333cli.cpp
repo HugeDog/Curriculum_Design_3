@@ -112,11 +112,11 @@ int main(int argc, char **argv) {
     snprintf(senss,sizeof(senss),"%ju",seds.b);
     fprintf(files,"%s",senss);
     fclose(files);
-    system("./rsa1 s ../pem/clientpri.pem");
+    system("./rsa1 g ../pem/middlepri.pem");
     
    
     FILE *fp2;
-		fp2=fopen("../pem/signcli.txt","r");//写签名
+		fp2=fopen("../pem/signmiddle.txt","r");//写签名
     if(!fp2)
     {
       printf("文件打开失败\n");

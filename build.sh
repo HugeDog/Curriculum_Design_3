@@ -16,8 +16,10 @@ fi
 echo -e "================= BUILDING... ==================="
 g++ ./src/1.cpp -o ./build/1-server $options
 g++ ./src/2.cpp -o ./build/1-client $options
-g++ ./src/222.cpp -o ./build/1-clientsave $options
-g++ ./src/111.cpp -o ./build/1-serversave $options
+g++ ./src/222.cpp -o ./build/3-client $options
+g++ ./src/111.cpp -o ./build/3-server $options
+g++ ./src/333ser.cpp -o ./build/3-middleserver $options
+g++ ./src/333cli.cpp -o ./build/3-middleclient $options
 gcc ./src/rsa.c -o ./build/rsa1 $options
 
 g++ ./src/3.cpp -o ./build/2-thief $options
