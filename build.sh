@@ -50,3 +50,7 @@ make
 green "Leave Directory..."
 green "==================== ENDS! ======================"
 green "Done!"
+green "-----Jinqi Li and Chenchu Zhang Build Shell-----"
+yellow "-----Jinqi Li and Chenchu Zhang Build Shell-----"
+red "-----Jinqi Li and Chenchu Zhang Build Shell-----"
+blue "-----Jinqi Li and Chenchu Zhang Build Shell-----"
