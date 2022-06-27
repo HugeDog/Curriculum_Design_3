@@ -112,6 +112,7 @@ int main(int argc, char** args) {
     char ciphertext1r[2048], useless[2048];
     char flag_sr[10] = {'\0','\0','\0','\0','\0','\0','\0','\0','\0','\0'};
     char flagcr;
+    char bef[MAX_LEN];
     ////////////////////////////////////////////////////////////////
     
     if(bind(listen_socketfdl, (const struct sockaddr *)&host_addrl, sizeof(host_addrl)) == -1) {
@@ -248,6 +249,7 @@ int main(int argc, char** args) {
         // printf("%s~\n", decryptedtextl); 
         // printf("==================================================\n");
         utoc(decryptedtextl,useless);
+        decryptedtextl[0] += 1;
 
         ciphertext_lenr = encrypts(decryptedtextl, strlen(useless)+1, key222, iv,  ciphertextr);  
         const char* tr = reinterpret_cast<const  char *>( ciphertextr );
@@ -255,6 +257,8 @@ int main(int argc, char** args) {
         BIO_dump_fp(stdout, tr, ciphertext_lenr); 
         printf("==================================================\n");
         printf("Decrypted text is:\n");  
+        printf("%s~\n", useless); 
+        printf("Changed text is:\n");  
         printf("%s~\n", decryptedtextl); 
         printf("==================================================\n");
         // errr = 0;

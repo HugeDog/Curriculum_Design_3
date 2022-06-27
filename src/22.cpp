@@ -56,6 +56,7 @@ unsigned char* ctou1(char* inputs, unsigned char* outputs){
 int main(int argc, char **argv) {
     if (!argv[1]){
         printf("Error Input!\n");
+        printf("Eg: ./2-client test1\n");
         exit(-1);
     }
     int socketfd, n, a, err;// 标记变量
