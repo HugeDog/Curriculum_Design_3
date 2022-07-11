@@ -65,6 +65,7 @@ function pkgs(){
 	    isContinueInput=${isContinueInput:-Y}
         if [[ $isContinueInput == [Yy] ]]; then
 	 	    ${osSystemPackage} -y install $1
+            green "Done!"
 	    else 
 	 	    red "Install Cancelled!"
 	    fi
@@ -72,6 +73,18 @@ function pkgs(){
         green "$1 Installed !"
 	fi
 }
+
+function updates(){
+    read -p "Update? [Y/n]:" isContinueInput
+	isContinueInput=${isContinueInput:-Y}
+    if [[ $isContinueInput == [Yy] ]]; then
+	    ${osSystemPackage} update
+        green "Done!"
+	else 
+	    red "Update Cancelled!"
+	fi
+}
+
 
 function builds(){
     build_dir="./build"
@@ -106,6 +119,7 @@ checkos
 yellow "--------------------------------"
 yellow "Attention Please:\nRUN IN ROOT!\nIf \"Inline Variable ERROR\" occurs, please check the version of g++ !"
 yellow "Before you start, you should ensure that \"sudo $osSystemPackage update \" command has already been executed!"
+updates
 blue "Press 'ENTER' to Continue..."
 read temp
 yellow "================== Check Package ================="
