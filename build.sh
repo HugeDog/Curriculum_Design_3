@@ -104,6 +104,10 @@ function builds(){
 yellow "--------------------------------"
 checkos
 yellow "--------------------------------"
+yellow "Attention Please:\nRUN IN ROOT!\nIf \"Inline Variable ERROR\" occurs, please check the version of g++ !"
+yellow "Before you start, you should ensure that \"sudo $osSystemPackage update \" command has already been executed!"
+blue "Press 'ENTER' to Continue..."
+read temp
 yellow "================== Check Package ================="
 pkgs gcc
 pkgs g++
